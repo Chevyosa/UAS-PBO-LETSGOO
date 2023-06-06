@@ -4,17 +4,61 @@
  */
 package uas.pbo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+
 /**
  *
  * @author LENOVO
  */
 public class TokenForm extends javax.swing.JFrame {
-
-    /**
-     * Creates new form TokenForm
-     */
+    ArrayList<Token> daftarToken;
+    Token token = new Token();
+    
+    
     public TokenForm() {
+        DBConnector.initDBConnection();
+        Timer timer = new Timer(1000, e -> {
+            updateTime();
+        });
+        timer.start();
+        Token.loadBarangFromDB();
+        daftarToken = Token.daftarToken;
         initComponents();
+        generateIDPembelianToken();
+    }
+    
+    
+     private void generateIDPembelianToken(){
+        try {
+            Statement stmt = DBConnector.connection.createStatement();
+            String sql = "SELECT COUNT(*) as jumlah_pembayaran FROM pembayaran";
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            int JumlahData = rs.getInt("jumlah_pembayaran");
+            System.out.println(JumlahData);
+            int GeneralID = JumlahData+1;
+            String idTransString = String.format("TN%03d", GeneralID);
+
+            tf_idPembelian.setText(idTransString);            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+              
+        }
+    }
+     
+    private void updateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String formattedDate = now.format(formatter);
+        tf_waktu.setText(formattedDate);
+
     }
 
     /**
@@ -31,20 +75,20 @@ public class TokenForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        NamaItem = new javax.swing.JTextField();
+        tf_namaItem = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         BayarToken = new javax.swing.JButton();
         ResetToken = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        TanggaldanWaktu = new javax.swing.JTextField();
-        IDPemesanan = new javax.swing.JTextField();
+        tf_waktu = new javax.swing.JTextField();
+        tf_idPembelian = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        NominalPulsa = new javax.swing.JTextField();
+        tf_nominal = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        Harga = new javax.swing.JTextField();
+        tf_harga = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        NomorHandphone = new javax.swing.JTextField();
+        tf_noToken = new javax.swing.JTextField();
 
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,10 +137,18 @@ public class TokenForm extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(0, 350));
 
+        tf_namaItem.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tf_namaItem.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tf_namaItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_namaItemActionPerformed(evt);
+            }
+        });
+
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel5.setText("Nama Item :");
 
-        BayarToken.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        BayarToken.setBackground(new java.awt.Color(254, 254, 254));
         BayarToken.setText("Bayar");
         BayarToken.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,11 +156,22 @@ public class TokenForm extends javax.swing.JFrame {
             }
         });
 
-        ResetToken.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        ResetToken.setBackground(new java.awt.Color(254, 254, 254));
         ResetToken.setText("Reset");
+        ResetToken.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResetTokenActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel6.setText(" WAKTU :");
+
+        tf_waktu.setEditable(false);
+        tf_waktu.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        tf_idPembelian.setEditable(false);
+        tf_idPembelian.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel3.setText("ID PEMBELIAN :");
@@ -116,11 +179,22 @@ public class TokenForm extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel8.setText("Nominal :");
 
+        tf_nominal.setEditable(false);
+        tf_nominal.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tf_nominal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel9.setText("Harga :");
 
+        tf_harga.setEditable(false);
+        tf_harga.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tf_harga.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel10.setText("Nomor Token :");
+
+        tf_noToken.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tf_noToken.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -130,11 +204,11 @@ public class TokenForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TanggaldanWaktu, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tf_waktu, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(IDPemesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tf_idPembelian, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(145, 145, 145)
@@ -158,10 +232,10 @@ public class TokenForm extends javax.swing.JFrame {
                             .addComponent(ResetToken)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(BayarToken))
-                        .addComponent(NamaItem, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(NominalPulsa, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Harga, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(NomorHandphone, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tf_namaItem, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tf_nominal, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tf_harga, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tf_noToken, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -169,26 +243,26 @@ public class TokenForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TanggaldanWaktu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tf_waktu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(IDPemesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tf_idPembelian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(43, 43, 43)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(NamaItem, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tf_namaItem, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(NominalPulsa, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tf_nominal, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Harga, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tf_harga, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(NomorHandphone, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tf_noToken, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BayarToken)
@@ -215,8 +289,42 @@ public class TokenForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BayarTokenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BayarTokenActionPerformed
-        // TODO add your handling code here:
+        String totalHarga = tf_harga.getText();
+        String stringTotalBelanja = totalHarga.replace(",", "");
+        float totalHargaFloat = Float.parseFloat(stringTotalBelanja);
+   
+        
+        String idPembelianPulsa = tf_idPembelian.getText();
+        
+        Pembayaran frame = new Pembayaran( totalHargaFloat, idPembelianPulsa);
+        frame.setVisible(true);
+        generateIDPembelianToken();
     }//GEN-LAST:event_BayarTokenActionPerformed
+
+    private void tf_namaItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_namaItemActionPerformed
+        Token tempToken;
+        boolean ditemukan = false;
+        String item = tf_namaItem.getText();
+        
+        for(int i=0; i<daftarToken.size();i++){
+            tempToken = daftarToken.get(i);
+            if(tempToken.nama_item.equals(item)){
+                System.out.println("Barang ditemukan");
+                int nominal = (int)tempToken.nominal;
+                tf_nominal.setText(String.format("%,d",nominal));
+                int totalBelanjaInt = (int)tempToken.harga_satuan;
+                tf_harga.setText(String.format("%,d",totalBelanjaInt));
+                
+            }
+        }
+    }//GEN-LAST:event_tf_namaItemActionPerformed
+
+    private void ResetTokenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetTokenActionPerformed
+        tf_namaItem.setText("");
+        tf_nominal.setText("");
+        tf_harga.setText("");
+        tf_noToken.setText("");
+    }//GEN-LAST:event_ResetTokenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -255,13 +363,7 @@ public class TokenForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BayarToken;
-    private javax.swing.JTextField Harga;
-    private javax.swing.JTextField IDPemesanan;
-    private javax.swing.JTextField NamaItem;
-    private javax.swing.JTextField NominalPulsa;
-    private javax.swing.JTextField NomorHandphone;
     private javax.swing.JButton ResetToken;
-    private javax.swing.JTextField TanggaldanWaktu;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -273,5 +375,11 @@ public class TokenForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField tf_harga;
+    private javax.swing.JTextField tf_idPembelian;
+    private javax.swing.JTextField tf_namaItem;
+    private javax.swing.JTextField tf_noToken;
+    private javax.swing.JTextField tf_nominal;
+    private javax.swing.JTextField tf_waktu;
     // End of variables declaration//GEN-END:variables
 }

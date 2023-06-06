@@ -14,7 +14,8 @@ public class UASPBO {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
+          TokenForm frame = new TokenForm();
+          frame.setVisible(true);
     }
     
 }
