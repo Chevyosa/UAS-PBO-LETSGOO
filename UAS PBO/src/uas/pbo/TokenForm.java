@@ -32,6 +32,7 @@ public class TokenForm extends javax.swing.JFrame {
         daftarToken = Token.daftarToken;
         initComponents();
         generateIDPembelianToken();
+        this.setLocationRelativeTo(null);
     }
     
     

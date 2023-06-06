@@ -23,6 +23,7 @@ public class TokenFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         generateToken();
+        this.setLocationRelativeTo(null);
         
     }
     

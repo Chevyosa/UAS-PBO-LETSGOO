@@ -15,6 +15,7 @@ public class BarangForm extends javax.swing.JFrame {
      */
     public BarangForm() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

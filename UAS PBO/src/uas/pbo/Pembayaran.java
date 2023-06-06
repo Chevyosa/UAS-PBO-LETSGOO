@@ -24,6 +24,7 @@ public class Pembayaran extends javax.swing.JFrame {
     
      public Pembayaran(){
         initComponents();
+        this.setLocationRelativeTo(null);
         DBConnector.initDBConnection();
     }
     

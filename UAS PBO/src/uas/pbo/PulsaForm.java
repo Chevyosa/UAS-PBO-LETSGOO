@@ -32,6 +32,7 @@ public class PulsaForm extends javax.swing.JFrame {
         daftarPulsa = Pulsa.daftarPulsa;
         initComponents();
         generateIDPembelianPulsa();
+        this.setLocationRelativeTo(null);
     }
     
     private void generateIDPembelianPulsa(){
