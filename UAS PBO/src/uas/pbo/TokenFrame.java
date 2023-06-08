@@ -20,7 +20,6 @@ public class TokenFrame extends javax.swing.JFrame {
      * Creates new form TokenFrame
      */
     public TokenFrame() {
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         generateToken();
         this.setLocationRelativeTo(null);
@@ -50,13 +49,30 @@ public class TokenFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         tf_token = new javax.swing.JTextField();
+        MainMenuButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
-        tf_token.setFont(new java.awt.Font("Stencil", 1, 36)); // NOI18N
+        tf_token.setFont(new java.awt.Font("MS Gothic", 1, 36)); // NOI18N
+        tf_token.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         tf_token.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_tokenActionPerformed(evt);
+            }
+        });
+
+        MainMenuButton.setBackground(new java.awt.Color(204, 0, 0));
+        MainMenuButton.setForeground(new java.awt.Color(255, 255, 255));
+        MainMenuButton.setText("X");
+        MainMenuButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                MainMenuButtonMouseClicked(evt);
+            }
+        });
+        MainMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MainMenuButtonActionPerformed(evt);
             }
         });
 
@@ -64,11 +80,23 @@ public class TokenFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tf_token, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 444, Short.MAX_VALUE)
+                        .addComponent(MainMenuButton))
+                    .addComponent(tf_token, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tf_token, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(MainMenuButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf_token, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -77,6 +105,16 @@ public class TokenFrame extends javax.swing.JFrame {
     private void tf_tokenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_tokenActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_tokenActionPerformed
+
+    private void MainMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MainMenuButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MainMenuButtonActionPerformed
+
+    private void MainMenuButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MainMenuButtonMouseClicked
+        MainWindow frame = new MainWindow();
+        frame.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_MainMenuButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -118,6 +156,7 @@ public class TokenFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton MainMenuButton;
     private javax.swing.JTextField tf_token;
     // End of variables declaration//GEN-END:variables
 }

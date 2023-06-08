@@ -16,6 +16,7 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
         initComponents();
         this.setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -50,12 +51,12 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("   Pilih Salah Satu Menu Untuk Transaksi");
         jLabel2.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+                jLabel2AncestorMoved(evt);
+            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-                jLabel2AncestorMoved(evt);
             }
         });
 
@@ -83,6 +84,7 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(0, 350));
 
+        TransaksiBarangButton.setBackground(new java.awt.Color(254, 254, 254));
         TransaksiBarangButton.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         TransaksiBarangButton.setText("TRANSAKSI BARANG");
         TransaksiBarangButton.addActionListener(new java.awt.event.ActionListener() {
@@ -102,6 +104,7 @@ public class MainWindow extends javax.swing.JFrame {
             .addGap(0, 160, Short.MAX_VALUE)
         );
 
+        TransaksiPulsaButton.setBackground(new java.awt.Color(254, 254, 254));
         TransaksiPulsaButton.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         TransaksiPulsaButton.setText("TRANSAKSI PULSA");
         TransaksiPulsaButton.addActionListener(new java.awt.event.ActionListener() {
@@ -121,6 +124,7 @@ public class MainWindow extends javax.swing.JFrame {
             .addGap(0, 160, Short.MAX_VALUE)
         );
 
+        TransaksiTokenButton.setBackground(new java.awt.Color(254, 254, 254));
         TransaksiTokenButton.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         TransaksiTokenButton.setText("TRANSAKSI TOKEN");
         TransaksiTokenButton.addActionListener(new java.awt.event.ActionListener() {
@@ -148,7 +152,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TransaksiBarangButton, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
+                    .addComponent(TransaksiBarangButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -198,19 +202,25 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2AncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel2AncestorMoved
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jLabel2AncestorMoved
 
     private void TransaksiBarangButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransaksiBarangButtonActionPerformed
-        // TODO add your handling code here:
+        BarangForm frame = new BarangForm();
+        frame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_TransaksiBarangButtonActionPerformed
 
     private void TransaksiPulsaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransaksiPulsaButtonActionPerformed
-        // TODO add your handling code here:
+        PulsaForm frame = new PulsaForm();
+        frame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_TransaksiPulsaButtonActionPerformed
 
     private void TransaksiTokenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransaksiTokenButtonActionPerformed
-        // TODO add your handling code here:
+        TokenForm frame = new TokenForm();
+        frame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_TransaksiTokenButtonActionPerformed
 
     /**

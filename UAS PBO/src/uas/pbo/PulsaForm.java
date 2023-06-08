@@ -313,6 +313,7 @@ public class PulsaForm extends javax.swing.JFrame {
         
         Pembayaran frame = new Pembayaran( totalHargaFloat, idPembelianPulsa);
         frame.setVisible(true);
+        this.dispose();
         generateIDPembelianPulsa();
     }//GEN-LAST:event_btn_bayarActionPerformed
 

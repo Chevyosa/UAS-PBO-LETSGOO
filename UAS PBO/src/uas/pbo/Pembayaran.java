@@ -4,6 +4,7 @@
  */
 package uas.pbo;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,11 +26,14 @@ public class Pembayaran extends javax.swing.JFrame {
      public Pembayaran(){
         initComponents();
         this.setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         DBConnector.initDBConnection();
     }
     
     public Pembayaran(float totalHarga, String jenisPembelian) {
         initComponents();
+        this.setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         DBConnector.initDBConnection();
         this.totalHarga = totalHarga;
         this.jenisPembelian = jenisPembelian;
@@ -73,6 +77,8 @@ public class Pembayaran extends javax.swing.JFrame {
     }
     
 
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -105,6 +111,7 @@ public class Pembayaran extends javax.swing.JFrame {
         tf_namaBank = new javax.swing.JTextField();
         tf_bayar = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
+        qr_bayar = new javax.swing.JButton();
 
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -321,15 +328,28 @@ public class Pembayaran extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
+        qr_bayar.setText("Konfirmasi");
+        qr_bayar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                qr_bayarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(353, 353, 353)
+                .addComponent(qr_bayar)
+                .addContainerGap(360, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 289, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(215, Short.MAX_VALUE)
+                .addComponent(qr_bayar)
+                .addGap(52, 52, 52))
         );
 
         BayarDebit.addTab("QR Code Payment", jPanel7);
@@ -383,6 +403,11 @@ public class Pembayaran extends javax.swing.JFrame {
         } else if(jenis.equals("TN")){
             TokenFrame frame = new TokenFrame();
             frame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Pembayaran Berhasil");
+            MainWindow frame = new MainWindow();
+            frame.setVisible(true);
+            this.dispose();
         }
 
         try {
@@ -391,6 +416,8 @@ public class Pembayaran extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Pembayaran.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        this.dispose();
     }//GEN-LAST:event_BayarCashActionPerformed
 
     private void tf_idPembayaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_idPembayaranActionPerformed
@@ -423,6 +450,11 @@ public class Pembayaran extends javax.swing.JFrame {
         } else if(jenis.equals("TN")){
             TokenFrame frame = new TokenFrame();
             frame.setVisible(true);
+        }else {
+            JOptionPane.showMessageDialog(this, "Pembayaran Berhasil");
+            MainWindow frame = new MainWindow();
+            frame.setVisible(true);
+            this.dispose();
         }
 
         try {
@@ -431,6 +463,8 @@ public class Pembayaran extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Pembayaran.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        this.dispose();
     }//GEN-LAST:event_tf_bayarActionPerformed
 
     private void tf_cashDiterimaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_cashDiterimaActionPerformed
@@ -469,6 +503,10 @@ public class Pembayaran extends javax.swing.JFrame {
             tf_cashDiterima.setText("");
         }
     }//GEN-LAST:event_tf_cashDiterimaKeyReleased
+
+    private void qr_bayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_qr_bayarActionPerformed
+
+    }//GEN-LAST:event_qr_bayarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -521,6 +559,7 @@ public class Pembayaran extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JButton qr_bayar;
     private javax.swing.JButton tf_bayar;
     private javax.swing.JTextField tf_cashDiterima;
     private javax.swing.JTextField tf_idPembayaran;

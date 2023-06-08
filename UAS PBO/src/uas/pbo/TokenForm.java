@@ -31,6 +31,7 @@ public class TokenForm extends javax.swing.JFrame {
         Token.loadBarangFromDB();
         daftarToken = Token.daftarToken;
         initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         generateIDPembelianToken();
         this.setLocationRelativeTo(null);
     }
@@ -299,6 +300,7 @@ public class TokenForm extends javax.swing.JFrame {
         
         Pembayaran frame = new Pembayaran( totalHargaFloat, idPembelianPulsa);
         frame.setVisible(true);
+        this.dispose();
         generateIDPembelianToken();
     }//GEN-LAST:event_BayarTokenActionPerformed
 
