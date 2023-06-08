@@ -4,14 +4,26 @@
  */
 package uas.pbo;
 
+
+
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import java.awt.image.BufferedImage;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
@@ -46,7 +58,37 @@ public class Pembayaran extends javax.swing.JFrame {
             updateTime();
         });
         timer.start();
+        String idPembayaran = tf_idPembayaran.getText();
+        String totalHargaQRIS = tf_totalPembayaran.getText();
+        String qrCodeText = "Terimakasih telah melakukan pembayaran dengan ID "+idPembayaran+" Dengan Total Harga "+totalHargaQRIS; 
+        int size = 200;
 
+        String fileType = "png";
+        String filePath = "qr_code.png";
+
+            try {
+                    
+                QRCodeWriter qrCodeWriter = new QRCodeWriter();
+                BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size);
+
+                BufferedImage bufferedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+                bufferedImage.createGraphics();
+
+               for (int x = 0; x < size; x++) {
+                    for (int y = 0; y < size; y++) {
+                        int grayValue = (bitMatrix.get(x, y) ? 0 : 1) & 0xff;
+                        bufferedImage.setRGB(x, y, (grayValue == 0 ? 0 : 0xFFFFFF));
+                        }
+                    }
+
+                    Image scaledImage = bufferedImage.getScaledInstance(qrButton.getWidth(), qrButton.getHeight(), Image.SCALE_SMOOTH);
+                    qrButton.setIcon(new ImageIcon(scaledImage));
+
+                    File qrFile = new File(filePath);
+                    ImageIO.write(bufferedImage, fileType, qrFile);
+                } catch (WriterException | IOException ex) {
+                    ex.printStackTrace();   
+            }
     }
     
     private void generateIDPembayaran(){
@@ -75,6 +117,12 @@ public class Pembayaran extends javax.swing.JFrame {
         tf_waktu.setText(formattedDate);
 
     }
+    
+    
+       
+
+       
+    
     
 
     
@@ -109,9 +157,10 @@ public class Pembayaran extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         tf_noDebit = new javax.swing.JTextField();
         tf_namaBank = new javax.swing.JTextField();
-        tf_bayar = new javax.swing.JButton();
+        btn_BayarDebit = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
-        qr_bayar = new javax.swing.JButton();
+        qrButton = new javax.swing.JLabel();
+        btn_konfirmasiQRIS = new javax.swing.JToggleButton();
 
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -283,10 +332,10 @@ public class Pembayaran extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel12.setText("Bank :");
 
-        tf_bayar.setText("Bayar");
-        tf_bayar.addActionListener(new java.awt.event.ActionListener() {
+        btn_BayarDebit.setText("Bayar");
+        btn_BayarDebit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_bayarActionPerformed(evt);
+                btn_BayarDebitActionPerformed(evt);
             }
         });
 
@@ -305,7 +354,7 @@ public class Pembayaran extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(tf_noDebit)
                             .addComponent(tf_namaBank, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(tf_bayar))
+                    .addComponent(btn_BayarDebit))
                 .addContainerGap(202, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -320,7 +369,7 @@ public class Pembayaran extends javax.swing.JFrame {
                     .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tf_namaBank, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(tf_bayar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_BayarDebit, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(93, Short.MAX_VALUE))
         );
 
@@ -328,10 +377,13 @@ public class Pembayaran extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
-        qr_bayar.setText("Konfirmasi");
-        qr_bayar.addActionListener(new java.awt.event.ActionListener() {
+        qrButton.setBackground(new java.awt.Color(255, 255, 255));
+
+        btn_konfirmasiQRIS.setBackground(new java.awt.Color(254, 254, 254));
+        btn_konfirmasiQRIS.setText("Konfirmasi");
+        btn_konfirmasiQRIS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                qr_bayarActionPerformed(evt);
+                btn_konfirmasiQRISActionPerformed(evt);
             }
         });
 
@@ -339,17 +391,20 @@ public class Pembayaran extends javax.swing.JFrame {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(353, 353, 353)
-                .addComponent(qr_bayar)
-                .addContainerGap(360, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(132, Short.MAX_VALUE)
+                .addComponent(qrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(72, 72, 72)
+                .addComponent(btn_konfirmasiQRIS)
+                .addGap(191, 191, 191))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(qrButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(215, Short.MAX_VALUE)
-                .addComponent(qr_bayar)
-                .addGap(52, 52, 52))
+                .addContainerGap(121, Short.MAX_VALUE)
+                .addComponent(btn_konfirmasiQRIS, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(101, 101, 101))
         );
 
         BayarDebit.addTab("QR Code Payment", jPanel7);
@@ -372,6 +427,7 @@ public class Pembayaran extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void BayarCashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BayarCashActionPerformed
         String uangDiterima = tf_cashDiterima.getText();
         uangDiterima = uangDiterima.replace(",", "");
@@ -424,7 +480,7 @@ public class Pembayaran extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_idPembayaranActionPerformed
 
-    private void tf_bayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_bayarActionPerformed
+    private void btn_BayarDebitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_BayarDebitActionPerformed
         String namaBank = tf_namaBank.getText();
         String noKartu = tf_noDebit.getText();
         
@@ -445,12 +501,12 @@ public class Pembayaran extends javax.swing.JFrame {
         
         String jenis = jenisPembelian.substring(0,2);
         
-        if(jenis.equals("PL")){
+       if(jenis.equals("PL")){
             JOptionPane.showMessageDialog(this,"Pulsa Telah Terkirim");
         } else if(jenis.equals("TN")){
             TokenFrame frame = new TokenFrame();
             frame.setVisible(true);
-        }else {
+        } else {
             JOptionPane.showMessageDialog(this, "Pembayaran Berhasil");
             MainWindow frame = new MainWindow();
             frame.setVisible(true);
@@ -465,7 +521,7 @@ public class Pembayaran extends javax.swing.JFrame {
         }
         
         this.dispose();
-    }//GEN-LAST:event_tf_bayarActionPerformed
+    }//GEN-LAST:event_btn_BayarDebitActionPerformed
 
     private void tf_cashDiterimaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_cashDiterimaActionPerformed
         String totalbelanja = tf_totalPembayaran.getText();
@@ -504,9 +560,46 @@ public class Pembayaran extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tf_cashDiterimaKeyReleased
 
-    private void qr_bayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_qr_bayarActionPerformed
+    private void btn_konfirmasiQRISActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_konfirmasiQRISActionPerformed
+     
+        QRIS qris = new QRIS();
+        
+        String totalHargaString = tf_totalPembayaran.getText();
+        totalHargaString = totalHargaString.replace(",", "");
+        float totalHargaFloat = Float.parseFloat(totalHargaString);
+        qris.setTotalHarga(totalHargaFloat);
+        
+        String waktuPembayaran = tf_waktu.getText();
+        qris.setWaktuPembayaran(waktuPembayaran);
+        
+        String IDPembayaran = tf_idPembayaran.getText();
+        String formattedOutput = IDPembayaran.substring(2);
+        int result = Integer.parseInt(formattedOutput);
+        qris.setIDPembayaran(result);
+        
+        String jenis = jenisPembelian.substring(0,2);
+        
+       if(jenis.equals("PL")){
+            JOptionPane.showMessageDialog(this,"Pulsa Telah Terkirim");
+        } else if(jenis.equals("TN")){
+            TokenFrame frame = new TokenFrame();
+            frame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Pembayaran Berhasil");
+            MainWindow frame = new MainWindow();
+            frame.setVisible(true);
+            this.dispose();
+        }
 
-    }//GEN-LAST:event_qr_bayarActionPerformed
+        try {
+            qris.simpanDatabase();
+            generateIDPembayaran();
+        } catch (SQLException ex) {
+            Logger.getLogger(Pembayaran.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        this.dispose();
+    }//GEN-LAST:event_btn_konfirmasiQRISActionPerformed
 
     /**
      * @param args the command line arguments
@@ -546,6 +639,8 @@ public class Pembayaran extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BayarCash;
     private javax.swing.JTabbedPane BayarDebit;
+    private javax.swing.JButton btn_BayarDebit;
+    private javax.swing.JToggleButton btn_konfirmasiQRIS;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -559,8 +654,7 @@ public class Pembayaran extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JButton qr_bayar;
-    private javax.swing.JButton tf_bayar;
+    private javax.swing.JLabel qrButton;
     private javax.swing.JTextField tf_cashDiterima;
     private javax.swing.JTextField tf_idPembayaran;
     private javax.swing.JTextField tf_kembalian;

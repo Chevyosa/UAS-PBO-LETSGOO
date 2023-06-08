@@ -10,23 +10,19 @@ import java.sql.SQLException;
 
 /**
  *
- * @author LENOVO
+ * @author M IQBAL
  */
-
-public class QRCode implements PembayaranInterface {
-    
+public class QRIS implements PembayaranInterface {
     private float totalHarga;
     private int IDPembayaran;
     private String waktuPembayaran;
     
-    public String qrcode;
-    public final String jenisPembayaran = "QRCode";
     
-    public QRCode(String qrcode){
-        this.qrcode = qrcode;
-    }
+ 
+    String jenisPembayaran = "QRIS";
     
 
+    
     @Override
     public float getTotalHarga() {
         return totalHarga;
@@ -44,7 +40,7 @@ public class QRCode implements PembayaranInterface {
 
     @Override
     public void setWaktuPembayaran(String waktuPembayaran) {
-        this.waktuPembayaran = waktuPembayaran; 
+        this.waktuPembayaran = waktuPembayaran;
     }
 
     @Override
@@ -53,11 +49,11 @@ public class QRCode implements PembayaranInterface {
     }
 
     @Override
-    public void setIDPembayaran(int IDPembayaram) {
+    public void setIDPembayaran(int IDPembayaran) {
         this.IDPembayaran = IDPembayaran;
     }
     
-    public void simpanDatabase() throws SQLException{
+     public void simpanDatabase() throws SQLException{
          try{
             Connection conn = DBConnector.initDBConnection();
             String sql = "INSERT INTO pembayaran(id_pembayaran, total_belanja, waktu_pembayaran,jenis_pembayaran) VALUES(?, ?, ?, ?)";
@@ -73,5 +69,6 @@ public class QRCode implements PembayaranInterface {
             System.out.print(e);
         }
     }
+    
     
 }

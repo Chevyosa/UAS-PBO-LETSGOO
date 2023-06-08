@@ -14,7 +14,7 @@ public class UASPBO {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-          MainWindow frame = new MainWindow();
+          LoginForm frame = new LoginForm();
           frame.setVisible(true);
     }
     

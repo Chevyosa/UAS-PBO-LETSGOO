@@ -337,7 +337,7 @@
                                   <Component id="tf_namaBank" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="tf_bayar" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="btn_BayarDebit" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="202" max="32767" attributes="0"/>
                   </Group>
@@ -357,7 +357,7 @@
                           <Component id="tf_namaBank" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="tf_bayar" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="btn_BayarDebit" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace pref="93" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -384,12 +384,12 @@
             </Component>
             <Component class="javax.swing.JTextField" name="tf_namaBank">
             </Component>
-            <Component class="javax.swing.JButton" name="tf_bayar">
+            <Component class="javax.swing.JButton" name="btn_BayarDebit">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Bayar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tf_bayarActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_BayarDebitActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -411,30 +411,43 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="353" max="-2" attributes="0"/>
-                      <Component id="qr_bayar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="360" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace pref="132" max="32767" attributes="0"/>
+                      <Component id="qrButton" min="-2" pref="296" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="btn_konfirmasiQRIS" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="191" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="qrButton" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="215" max="32767" attributes="0"/>
-                      <Component id="qr_bayar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                      <EmptySpace pref="121" max="32767" attributes="0"/>
+                      <Component id="btn_konfirmasiQRIS" min="-2" pref="59" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="qr_bayar">
+            <Component class="javax.swing.JLabel" name="qrButton">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JToggleButton" name="btn_konfirmasiQRIS">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Konfirmasi"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="qr_bayarActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_konfirmasiQRISActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
